@@ -1,3 +1,4 @@
+
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
@@ -7,37 +8,39 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 contract MyToken is ERC20 {
     // Define the global variables for balances, total supply, name, and symbol below
 
-    // Constructor that mints the initial supply to the deployer of the contract
+    // This is the total supply of the token (handled internally by ERC20)
+    uint256 private _totalSupply;
+
+    // Name and symbol of the token (already handled by ERC20 constructor)
+    string private _name;
+    string private _symbol;
+
+    // Mapping to store the balances (handled internally by ERC20)
+    mapping(address => uint256) private _balances;
+
+    // Constructor that sets the name, symbol, and initial supply
     constructor(uint256 initialSupply) ERC20("MyToken", "MTK") {
         // Mint the initial supply of tokens to the deployer's address
+        _mint(msg.sender, initialSupply);
     }
 
-    // Function to mint new tokens to a specified address
-    function mint(address to, uint256 amount) public {
-        // Implement the mint function using the _mint internal function
+    // Function to get the name of the token (optional override, since ERC20 provides it)
+    function name() public view override returns (string memory) {
+        return _name;
     }
 
-    // Function to burn tokens from a specified address
-    function burn(address from, uint256 amount) public {
-        // Implement the burn function using the _burn internal function
+    // Function to get the symbol of the token (optional override, since ERC20 provides it)
+    function symbol() public view override returns (string memory) {
+        return _symbol;
     }
 
-    // Function to transfer tokens from the caller's address to a specified address
-    function transfer(address to, uint256 amount) public override returns (bool) {
-        // Implement the transfer function using the _transfer internal function
+    // Function to get the total supply (optional override, since ERC20 provides it)
+    function totalSupply() public view override returns (uint256) {
+        return _totalSupply;
     }
 
-    // Function to approve an address to spend a certain amount of tokens on behalf of the caller
-    function approve(address spender, uint256 amount) public override returns (bool) {
-        // Implement the approve function using the _approve internal function
-    }
-
-    // Function to transfer tokens from one address to another using an allowance
-    function transferFrom(address from, address to, uint256 amount) public override returns (bool) {
-        // Implement the transferFrom function using the _transfer and _approve internal functions
-    }
-
-    function getBalanceOf(address account) public view returns (uint256) {
-        // Implement the getBalanceOf function
+    // Function to get the balance of a specified address
+    function balanceOf(address account) public view override returns (uint256) {
+        return _balances[account];
     }
 }
